@@ -90,3 +90,6 @@ C:\Users\Denys\Desktop\C#\vocabulary-app\vocabulary-app\vocabulary-app\obj\Debug
 C:\Users\Denys\Desktop\C#\vocabulary-app\vocabulary-app\vocabulary-app\obj\Debug\netcoreapp3.1\vocabulary-app.dll
 C:\Users\Denys\Desktop\C#\vocabulary-app\vocabulary-app\vocabulary-app\obj\Debug\netcoreapp3.1\vocabulary-app.pdb
 C:\Users\Denys\Desktop\C#\vocabulary-app\vocabulary-app\vocabulary-app\obj\Debug\netcoreapp3.1\vocabulary-app.genruntimeconfig.cache
+C:\Users\Denys\Desktop\C#\vocabulary-app\vocabulary-app\vocabulary-app\obj\Debug\netcoreapp3.1\Razor\Views\Admin\Index.cshtml.g.cs
+C:\Users\Denys\Desktop\C#\vocabulary-app\vocabulary-app\vocabulary-app\obj\Debug\netcoreapp3.1\Razor\Views\Admin\AddTopic.cshtml.g.cs
+C:\Users\Denys\Desktop\C#\vocabulary-app\vocabulary-app\vocabulary-app\obj\Debug\netcoreapp3.1\Razor\Views\Admin\AddWordTopic.cshtml.g.cs

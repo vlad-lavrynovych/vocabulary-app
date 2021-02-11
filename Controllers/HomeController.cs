@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
+using Microsoft.AspNetCore.Identity;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -20,6 +21,9 @@ namespace vocabulary_app.Controllers
 
         public IActionResult Index()
         {
+            string username = User.Identity.Name;
+            ViewBag.gretting = "Hello" + username;
+            ViewBag.username = username;
             return View();
         }
 
