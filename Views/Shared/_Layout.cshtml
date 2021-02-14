@@ -25,8 +25,8 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
-                            @{ if (@ViewBag.username == "admin@example.com")
-                                {
+                        @{ if (@ViewBag.username == "admin@example.com")
+                            {
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" href="/Admin/Index/">AdminPanel</a>
                                 </li>
@@ -36,11 +36,11 @@
                                 <li class="nav-item">
                                     <a class="nav-link text-dark" href="/Admin/AddWordTopic/">AddTopic</a>
                                 </li>
-                                    }
-                               }
-                              
+                            }
+                        }
 
-                            </ul>
+
+                    </ul>
                 </div>
             </div>
         </nav>
