@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using vocabulary_app.Data;
+using vocabulary_app.Models;
 
 namespace vocabulary_app
 {
