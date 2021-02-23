@@ -14,9 +14,9 @@ namespace vocabulary_app.Data
         {
         }
 
-        public DbSet<Word> words { get; set; }
-        public DbSet<Vocabulary> vocabularies { get; set; }
-        public DbSet<Topic> topics { get; set; }
+        public DbSet<Word> Words { get; set; }
+        public DbSet<Vocabulary> Vocabularies { get; set; }
+        public DbSet<Topic> Topics { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -40,6 +40,10 @@ namespace vocabulary_app.Data
                         .HasOne<Vocabulary>(sc => sc.Vocabulary)
                         .WithMany(s => s.TopicVocabularies)
                         .HasForeignKey(sc => sc.VocabularyId);
+
+            modelBuilder.Entity<Vocabulary>()
+                .HasOne<User>(v => v.User)
+                .WithOne(u => u.Vocabulary);
         }
     }
 }

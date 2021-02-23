@@ -10,7 +10,7 @@ namespace vocabulary_app.Models
     {
         public Guid Id { get; set; }
         public string UserId { get; set; }
-        public IdentityUser User { get; set; }
+        public User User { get; set; }
         public string Name { get; set; }
         public IEnumerable<WordTopic> WordTopics { get; set; }
         public IEnumerable<TopicVocabulary> TopicVocabularies { get; set; }
