@@ -13,7 +13,7 @@ namespace vocabulary_app.Models
         public User User { get; set; }
         public string OriginalValue { get; set; }
         public string TranslatedValue { get; set; }
-        public PartOfSpeech PartOfSpeech { get; set; }
+        public string PartOfSpeech { get; set; }
         public string PartOfSpeechDetails { get; set; }
         public string Description { get; set; }
         public IEnumerable<WordTopic> WordTopics { get; set; }

@@ -41,9 +41,7 @@ namespace vocabulary_app.Data
                         .WithMany(s => s.TopicVocabularies)
                         .HasForeignKey(sc => sc.VocabularyId);
 
-            modelBuilder.Entity<Vocabulary>()
-                .HasOne<User>(v => v.User)
-                .WithOne(u => u.Vocabulary);
+            modelBuilder.Entity<Vocabulary>().HasOne(p => p.User).WithOne();
         }
     }
 }
