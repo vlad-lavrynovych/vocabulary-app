@@ -1,0 +1,88 @@
+﻿@model vocabulary_app.Models.Word
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Word</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.User)
+        </dt>
+        <dd class = "col-sm-10">
+            @ViewBag.Words.UserId
+        </dd class>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.OriginalValue)
+        </dt>
+        <dd class="col-sm-10">
+            @ViewBag.Words.OriginalValue
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.TranslatedValue)
+        </dt>
+        <dd class="col-sm-10">
+            @ViewBag.Words.TranslatedValue
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PartOfSpeech)
+        </dt>
+        <dd class="col-sm-10">
+            @if (@ViewBag.Words.PartOfSpeech == "1")
+            {
+                <p>Noun</p>
+            }
+            else if (@ViewBag.Words.PartOfSpeech == "2")
+            {
+                <p>Pronoun</p>
+            }
+            else if (@ViewBag.Words.PartOfSpeech == "3")
+            {
+                <p>Verb</p>
+            }
+            else if (@ViewBag.Words.PartOfSpeech == "4")
+            {
+                <p>Adjective</p>
+            }
+            else if (@ViewBag.Words.PartOfSpeech == "5")
+            {
+                <p>Adverb</p>
+            }
+            else if (@ViewBag.Words.PartOfSpeech == "6")
+            {
+                <p>Preposotion</p>
+            }
+            else if (@ViewBag.Words.PartOfSpeech == "7")
+            {
+                <p>Conjunction</p>
+            }
+            else
+            {
+                <p>INTERJECTION</p>
+            }
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.PartOfSpeechDetails)
+        </dt>
+        <dd class="col-sm-10">
+            @ViewBag.Words.PartOfSpeechDetails
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class="col-sm-10">
+            @ViewBag.Words.Description
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Index">Back to List</a>
+    </form>
+</div>

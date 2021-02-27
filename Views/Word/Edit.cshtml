@@ -1,0 +1,69 @@
+﻿@model vocabulary_app.Models.Word
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Word</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            @*            <div class="form-group">
+            <label asp-for="UserId" class="control-label"></label>
+            <select asp-for="UserId" class="form-control" asp-items="ViewBag.UserId"></select>
+            <span asp-validation-for="UserId" class="text-danger"></span>
+        </div>*@
+                <div class="form-group">
+                    <label asp-for="OriginalValue" class="control-label"></label>
+                    <input asp-for="OriginalValue" class="form-control" value="@ViewBag.Words.OriginalValue" />
+                    <span asp-validation-for="OriginalValue" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="TranslatedValue" class="control-label"></label>
+                    <input asp-for="TranslatedValue" class="form-control" value="@ViewBag.Words.TranslatedValue" />
+                    <span asp-validation-for="TranslatedValue" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PartOfSpeech" class="control-label"></label>
+                    <input asp-for="PartOfSpeech" class="form-control" list="PS" value="@ViewBag.Words.PartOfSpeech">
+                    <datalist id="PS">
+                        <option value="1">Noun</option>
+                        <option value="2">Pronoun</option>
+                        <option value="3">Verb</option>
+                        <option value="4">Adjective</option>
+                        <option value="5">Adverb</option>
+                        <option value="6">Preposotion</option>
+                        <option value="7">CONJUNCTION </option>
+                        <option value="8">INTERJECTION</option>
+                    </datalist>
+                    <span asp-validation-for="PartOfSpeech" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PartOfSpeechDetails" class="control-label"></label>
+                    <input asp-for="PartOfSpeechDetails" class="form-control" value="@ViewBag.Words.PartOfSpeechDetails" />
+                    <span asp-validation-for="PartOfSpeechDetails" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label"></label>
+                    <input asp-for="Description" class="form-control" value="@ViewBag.Words.Description" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

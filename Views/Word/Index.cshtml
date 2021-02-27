@@ -1,0 +1,104 @@
+﻿@model IEnumerable<vocabulary_app.Models.Word>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                -
+            </th>
+            <th>
+                -
+            </th>
+            <th>
+                -
+            </th>
+            <th>
+                -
+            </th>
+            <th>
+                -
+            </th>
+            <th>
+                -
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in ViewBag.Words) {
+        <tr>
+            <td>
+                @item.Id
+            </td>
+            <td>
+                <!-- N/A value-->
+                @item.User
+            </td>            
+            <td>
+                <!-- N/A value-->
+                @item.UserId
+            </td>
+
+            <td>
+                @item.OriginalValue
+            </td>
+            <td>
+                @item.TranslatedValue
+            </td>
+            <td>
+                @if (@item.PartOfSpeech == "1")
+                {
+                    <p>Noun</p>
+                }
+                else if (@item.PartOfSpeech == "2")
+                {
+                    <p>Pronoun</p>
+                }
+                else if (@item.PartOfSpeech == "3")
+                {
+                    <p>Verb</p>
+                }
+                else if (@item.PartOfSpeech == "4")
+                {
+                    <p>Adjective</p>
+                }
+                else if (@item.PartOfSpeech == "5")
+                {
+                    <p>Adverb</p>
+                }
+                else if (@item.PartOfSpeech == "6")
+                {
+                    <p>Preposotion</p>
+                }
+                else if (@item.PartOfSpeech == "7")
+                {
+                    <p>Conjunction</p>
+                }
+                else
+                {
+                    <p>INTERJECTION</p>
+                }
+            </td>
+            <td>
+                @item.PartOfSpeechDetails
+            </td>
+            <td>
+                @item.Description
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

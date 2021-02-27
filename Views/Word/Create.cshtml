@@ -1,0 +1,63 @@
+﻿@model vocabulary_app.Models.Word
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Word</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="OriginalValue" class="control-label"></label>
+                <input asp-for="OriginalValue" class="form-control" />
+                <span asp-validation-for="OriginalValue" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TranslatedValue" class="control-label"></label>
+                <input asp-for="TranslatedValue" class="form-control" />
+                <span asp-validation-for="TranslatedValue" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PartOfSpeech" class="control-label"></label>
+                <span asp-validation-for="PartOfSpeech" class="text-danger"></span>
+                <input  asp-for="PartOfSpeech" class="form-control" list="PS">
+                <datalist id="PS">
+                    <option value="1">Noun</option>
+                    <option value="2">Pronoun</option>
+                    <option value="3">Verb</option>
+                    <option value="4">Adjective</option>
+                    <option value="5">Adverb</option>
+                    <option value="6">Preposotion</option>
+                    <option value="7">CONJUNCTION </option>
+                    <option value="8">INTERJECTION</option>
+                </datalist>
+            </div>
+            <div class="form-group">
+                <label asp-for="PartOfSpeechDetails" class="control-label"></label>
+                <input asp-for="PartOfSpeechDetails" class="form-control" />
+                <span asp-validation-for="PartOfSpeechDetails" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
