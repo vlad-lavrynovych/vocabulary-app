@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using vocabulary_app.Data;
 
 namespace vocabulary_app.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210227082247_m2")]
+    partial class m2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -275,13 +277,9 @@ namespace vocabulary_app.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId")
-                        .IsUnique()
-                        .HasFilter("[UserId] IS NOT NULL");
 
                     b.ToTable("Vocabularies");
                 });
@@ -341,6 +339,13 @@ namespace vocabulary_app.Data.Migrations
             modelBuilder.Entity("vocabulary_app.Models.User", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+                    b.Property<Guid>("VocabularyId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasIndex("VocabularyId")
+                        .IsUnique()
+                        .HasFilter("[VocabularyId] IS NOT NULL");
 
                     b.HasDiscriminator().HasValue("User");
                 });
@@ -418,13 +423,6 @@ namespace vocabulary_app.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("vocabulary_app.Models.Vocabulary", b =>
-                {
-                    b.HasOne("vocabulary_app.Models.User", "User")
-                        .WithOne()
-                        .HasForeignKey("vocabulary_app.Models.Vocabulary", "UserId");
-                });
-
             modelBuilder.Entity("vocabulary_app.Models.Word", b =>
                 {
                     b.HasOne("vocabulary_app.Models.User", "User")
@@ -443,6 +441,15 @@ namespace vocabulary_app.Data.Migrations
                     b.HasOne("vocabulary_app.Models.Word", "Word")
                         .WithMany("WordTopics")
                         .HasForeignKey("WordId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("vocabulary_app.Models.User", b =>
+                {
+                    b.HasOne("vocabulary_app.Models.Vocabulary", "Vocabulary")
+                        .WithOne("User")
+                        .HasForeignKey("vocabulary_app.Models.User", "VocabularyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

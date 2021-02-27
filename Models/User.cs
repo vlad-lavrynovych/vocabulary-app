@@ -8,7 +8,7 @@ namespace vocabulary_app.Models
 {
     public class User : IdentityUser
     {
-        public Guid VocabularyId { get; set; }
-        public Vocabulary Vocabulary { get; set; }
+        //public Guid VocabularyId { get; set; }
+        //public Vocabulary Vocabulary { get; set; }
     }
 }

@@ -19,10 +19,14 @@ namespace vocabulary_app.Models
         public static PartOfSpeech CONJUNCTION = new PartOfSpeech(7, "CONJUNCTION");
         public static PartOfSpeech INTERJECTION = new PartOfSpeech(8, "INTERJECTION");
 
-        private PartOfSpeech(int value, String name) {
+        private PartOfSpeech(int value, String name)
+        {
             this.name = name;
             this.value = value;
         }
+
+        public PartOfSpeech()
+        { }
         public override String ToString()
         {
             return name;
