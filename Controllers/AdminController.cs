@@ -11,7 +11,7 @@ namespace vocabulary_app.Controllers
         public IActionResult AckResponse()
         {
             //Password123@
-            if (User.Identity.Name == "admin@example.com")
+            if (User.Identity.Name == "webadmin@example.com")
             {
                 string username = User.Identity.Name;
                 ViewBag.username = username;
@@ -32,7 +32,7 @@ namespace vocabulary_app.Controllers
             return AckResponse();
         }
 
-        public IActionResult AddWordTopic()
+        public IActionResult AddWord()
         {
             return AckResponse();
         }
