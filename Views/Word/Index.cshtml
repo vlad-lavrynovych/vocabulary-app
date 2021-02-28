@@ -4,33 +4,44 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>View</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+<table class="table table-dark  table-striped">
     <thead>
         <tr>
             <th>
-                -
+                Id
             </th>
             <th>
-                -
+                User
             </th>
             <th>
-                -
+                UserId
             </th>
             <th>
-                -
+                OriginalValue
             </th>
             <th>
-                -
+                TranslatedValue
             </th>
             <th>
-                -
+                PartOfSpeech
             </th>
-            <th></th>
+            <th>
+                PartOfSpeechDetails
+            </th>
+            <th>
+                Description
+            </th>
+            <th>
+                Edit
+            </th>
+            <th>
+                Delete
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -41,11 +52,12 @@
             </td>
             <td>
                 <!-- N/A value-->
-                @item.User
+                @(item.User==null?"-":@item.User)
+
             </td>            
             <td>
                 <!-- N/A value-->
-                @item.UserId
+                @(item.UserId==null?"-":@item.UserId)
             </td>
 
             <td>
@@ -89,14 +101,17 @@
                 }
             </td>
             <td>
-                @item.PartOfSpeechDetails
+                @(item.PartOfSpeechDetails == null?"-":@item.PartOfSpeechDetails)
+
             </td>
             <td>
-                @item.Description
+                @(item.Description == null?"-":@item.Description)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <button class="btn btn-warning" ><a class="text-secondary" asp-action="Edit" asp-route-id="@item.Id">Edit</a> </button>
+            </td>
+            <td>
+                <button class="btn btn-danger"><a class="text-white" asp-action="Delete" asp-route-id="@item.Id">Delete</a> </button>
             </td>
         </tr>
 }
