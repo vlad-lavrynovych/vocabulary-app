@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Security.Claims;
+using System.Security.Principal;
 using vocabulary_app.Data;
 using vocabulary_app.Models;
 
@@ -43,10 +44,24 @@ namespace vocabulary_app.Controllers
         public IActionResult Create(Word word)
         {
 
-            if( word != null)
+            if (word != null)
             {
-                /*word.UserId = User.Identity.Name;
-                 It doesn`t work*/ 
+                ClaimsIdentity claimsIdentity = User.Identity as ClaimsIdentity;
+
+                // the principal identity is a claims identity.
+                // now we need to find the NameIdentifier claim
+                var userIdClaim = claimsIdentity.Claims
+                    .FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
+
+                var userIdValue = userIdClaim.Value;
+
+
+                IdentityUser user = _dbContext.Users.FirstOrDefault(IdentityUser => IdentityUser.Id == userIdValue);
+
+                word.User = user;
+                word.UserId = user.Id;
+
+                //It doesn`t work*
                 _dbContext.Words.Add(word);
                 _dbContext.SaveChanges();
             }
@@ -63,14 +78,14 @@ namespace vocabulary_app.Controllers
         // POST: WordController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public  ActionResult Edit(Guid Id, [Bind("Id,OriginalValue,TranslatedValue,PartOfSpeech,PartOfSpeechDetails,Description")] Word word)
+        public ActionResult Edit(Guid Id, [Bind("Id,OriginalValue,TranslatedValue,PartOfSpeech,PartOfSpeechDetails,Description")] Word word)
         {
 
-                
+
             _dbContext.Update(word);
             _dbContext.SaveChanges();
             return RedirectToAction("Index", "Word");
-                
+
         }
 
         public ActionResult Delete(Guid Id)
