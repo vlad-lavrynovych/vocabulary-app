@@ -1,0 +1,50 @@
+﻿@model IEnumerable<vocabulary_app.Models.Topic>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                User
+            </th>
+            <th>
+                Name
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in ViewBag.Topics) {
+        <tr>
+            <td>
+                @item.Id
+            </td>
+            <td>
+                <!-- N/A value-->
+                @(item.User==null?"-":@item.User)
+
+            </td>
+            <td>
+                <!-- N/A value-->
+                @(item.UserId==null?"-":@item.UserId)
+            </td>
+
+            <td>
+                @item.Name
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
