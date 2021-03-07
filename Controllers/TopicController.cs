@@ -5,46 +5,50 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
-using System.Security.Principal;
+using System.Threading.Tasks;
 using vocabulary_app.Data;
 using vocabulary_app.Models;
 
 namespace vocabulary_app.Controllers
 {
-    public class WordController : Controller
+    public class TopicController : Controller
     {
 
-
         private readonly ApplicationDbContext _dbContext;
+        // GET: TopicController
 
-        public WordController(ApplicationDbContext dbContext)
+        public TopicController(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
         }
         public ActionResult Index()
         {
-            IEnumerable<Word> words = _dbContext.Words;
+            IEnumerable<Topic> topics = _dbContext.Topics;
 
-            ViewBag.Words = words;
+            ViewBag.Topics = topics;
 
             return View();
-
         }
 
+        // GET: TopicController/Details/5
         public ActionResult Details(int id)
         {
             return View();
         }
 
+        // GET: TopicController/Create
         public ActionResult Create()
         {
             return View();
         }
+
+        // POST: TopicController/Create
         [HttpPost]
-        public IActionResult Create(Word word)
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(Topic topic)
         {
 
-            if (word != null)
+            if (topic != null)
             {
                 ClaimsIdentity claimsIdentity = User.Identity as ClaimsIdentity;
 
@@ -58,30 +62,35 @@ namespace vocabulary_app.Controllers
 
                 IdentityUser user = _dbContext.Users.FirstOrDefault(IdentityUser => IdentityUser.Id == userIdValue);
 
-                word.User = user;
-                word.UserId = user.Id;
+                topic.User = user;
+                topic.UserId = user.Id;
 
                 //It doesn`t work*
-                _dbContext.Words.Add(word);
+                _dbContext.Topics.Add(topic);
                 _dbContext.SaveChanges();
             }
-            return RedirectToAction("Index", "Word");
+            return RedirectToAction("Index", "Topic");
         }
 
+        // GET: TopicController/Edit/5
         public ActionResult Edit(Guid Id)
         {
-            Word word = _dbContext.Words.Find(Id);
-            ViewBag.Words = word;
+       
+            Topic topic = _dbContext.Topics.Find(Id);
+
+            ViewBag.Topics = topic;
             return View();
         }
+
 
         // POST: WordController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Guid Id, [Bind("Id,OriginalValue,TranslatedValue,PartOfSpeech,PartOfSpeechDetails,Description")] Word word)
+        public ActionResult Edit(Guid Id, [Bind("Id,Name")] Topic topic)
         {
-            
-            if (word != null)
+
+
+            if (topic != null)
             {
                 ClaimsIdentity claimsIdentity = User.Identity as ClaimsIdentity;
 
@@ -95,21 +104,24 @@ namespace vocabulary_app.Controllers
 
                 IdentityUser user = _dbContext.Users.FirstOrDefault(IdentityUser => IdentityUser.Id == userIdValue);
 
-                word.User = user;
-                word.UserId = user.Id;
+                topic.User = user;
+                topic.UserId = user.Id;
 
-                _dbContext.Update(word);
+                //It doesn`t work*
+                _dbContext.Update(topic);
                 _dbContext.SaveChanges();
             }
 
-            return RedirectToAction("Index", "Word");
+            return RedirectToAction("Index", "Topic");
 
         }
 
+        // GET: TopicController/Delete/5
+
         public ActionResult Delete(Guid Id)
         {
-            Word word = _dbContext.Words.Find(Id);
-            ViewBag.Words = word;
+            Topic topic = _dbContext.Topics.Find(Id);
+            ViewBag.Topics = topic;
             return View();
         }
 
@@ -117,22 +129,16 @@ namespace vocabulary_app.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(Guid Id, IFormCollection collection)
         {
-            Word word = _dbContext.Words.Find(Id);
-            if (word == null)
+            Topic topic = _dbContext.Topics.Find(Id);
+            if (topic == null)
             {
                 return RedirectToAction(nameof(Index));
             }
 
-            _dbContext.Words.Remove(word);
+            _dbContext.Topics.Remove(topic);
             _dbContext.SaveChanges();
-            return RedirectToAction("Index", "Topic");
+            return RedirectToAction("Index", "Word");
 
-        }
-        public static Guid ToGuid(int value)
-        {
-            byte[] bytes = new byte[16];
-            BitConverter.GetBytes(value).CopyTo(bytes, 0);
-            return new Guid(bytes);
         }
     }
 }
