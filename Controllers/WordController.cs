@@ -23,7 +23,16 @@ namespace vocabulary_app.Controllers
         }
         public ActionResult Index()
         {
-            IEnumerable<Word> words = _dbContext.Words;
+            ClaimsIdentity claimsIdentity = User.Identity as ClaimsIdentity;
+
+            // the principal identity is a claims identity.
+            // now we need to find the NameIdentifier claim
+            var userIdClaim = claimsIdentity.Claims
+                .FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier);
+
+            var userIdValue = userIdClaim.Value;
+
+            IEnumerable<Word> words = _dbContext.Words.Where(s => s.UserId == userIdValue);
 
             ViewBag.Words = words;
 
@@ -80,7 +89,7 @@ namespace vocabulary_app.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Edit(Guid Id, [Bind("Id,OriginalValue,TranslatedValue,PartOfSpeech,PartOfSpeechDetails,Description")] Word word)
         {
-            
+
             if (word != null)
             {
                 ClaimsIdentity claimsIdentity = User.Identity as ClaimsIdentity;

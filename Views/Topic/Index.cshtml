@@ -9,16 +9,24 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
+<table class="table table-dark  table-striped">
     <thead>
         <tr>
             <th>
                 User
             </th>
             <th>
+                UserId
+            </th>
+            <th>
                 Name
             </th>
-            <th></th>
+            <th>
+                Edit
+            </th>
+            <th>
+                Delete
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -29,20 +37,17 @@
             </td>
             <td>
                 <!-- N/A value-->
-                @(item.User==null?"-":@item.User)
-
-            </td>
-            <td>
-                <!-- N/A value-->
                 @(item.UserId==null?"-":@item.UserId)
             </td>
-
             <td>
                 @item.Name
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <button class="btn btn-warning"><a class="text-secondary" asp-action="Edit" asp-route-id="@item.Id">Edit</a> </button>
+                
+            </td>
+            <td>
+                <button class="btn btn-danger"><a  class="text-white" asp-action="Delete" asp-route-id="@item.Id">Delete</a> </button>
             </td>
         </tr>
 }
