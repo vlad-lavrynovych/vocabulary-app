@@ -53,6 +53,11 @@ namespace vocabulary_app.Controllers
         public IActionResult Create(Word word)
         {
 
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction(nameof(Create));
+            }
+
             if (word != null)
             {
                 ClaimsIdentity claimsIdentity = User.Identity as ClaimsIdentity;
@@ -134,7 +139,7 @@ namespace vocabulary_app.Controllers
 
             _dbContext.Words.Remove(word);
             _dbContext.SaveChanges();
-            return RedirectToAction("Index", "Topic");
+            return RedirectToAction("Index", "Word");
 
         }
         public static Guid ToGuid(int value)
