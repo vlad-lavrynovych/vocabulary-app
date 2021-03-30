@@ -60,9 +60,9 @@ namespace vocabulary_app.Controllers
             return View();
         }
 
-        public IActionResult TopicTestIndex(Guid Id)
+        public async Task<IActionResult> TopicTestIndex(Guid Id)
         {
-            Topic topic = _dbContext.Topics.Include(t => t.WordTopics).ThenInclude(i => i.Word).Where(t => t.Id.Equals(Id)).Single();
+            Topic topic = await _dbContext.Topics.Include(t => t.WordTopics).ThenInclude(i => i.Word).Where(t => t.Id.Equals(Id)).SingleAsync();
 
             IList<Word> words = new List<Word>();
 
@@ -72,6 +72,23 @@ namespace vocabulary_app.Controllers
             }
 
             ViewBag.Words = words;
+
+            return View();
+        }
+
+        public async Task<IActionResult> TopicTestResult(Guid Id, IList<WordTestAnswer> WordTestAnswers)
+        {
+            Topic topic = await _dbContext.Topics.Include(t => t.WordTopics).ThenInclude(i => i.Word).Where(t => t.Id.Equals(Id)).SingleAsync();
+
+            foreach (WordTestAnswer answer in WordTestAnswers)
+            {
+                Word word = topic.WordTopics.Single(s => s.Word.Id.Equals(answer.WordId)).Word;
+                answer.CorrectTranslation = word.TranslatedValue;
+                answer.OriginalValue = word.OriginalValue;
+                answer.Correct = answer.Translation.Equals(word.TranslatedValue);
+            }
+
+            ViewBag.WordTestAnswers = WordTestAnswers;
 
             return View();
         }

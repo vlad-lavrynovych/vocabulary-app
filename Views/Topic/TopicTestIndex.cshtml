@@ -4,35 +4,44 @@
     ViewData["Title"] = "TopicTestIndex";
 }
 
-<h1>TopicTestIndex</h1>
-
-<h4>Topic</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="TopicTestIndex">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
-                <select asp-for="UserId" class="form-control" asp-items="ViewBag.UserId"></select>
-                <span asp-validation-for="UserId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
+<h1>Test</h1>
+<form asp-action="TopicTestResult">
+    <table class="table table-dark  table-striped">
+        <thead>
+            <tr>
+                <th>
+                    Original Value
+                </th>
+                <th style="width:50%">
+                    Input Translation
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @{int i = 0;}
+            @foreach (Word word in ViewBag.Words)
+            {
+                <tr>
+                    <td>
+                        @word.OriginalValue
+                    </td>
+                    <td style="width:50%">
+                        <input name="WordTestAnswers[@i].Translation" class="form-control" />
+                        <input type="hidden" name="WordTestAnswers[@i].WordId" value="@word.Id" />
+                    </td>
+                </tr>
+                i++;
+            }
+        </tbody>
+    </table>
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-lg btn-success">Submit</button>
+</form>
 
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
