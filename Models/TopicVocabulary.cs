@@ -9,6 +9,8 @@ namespace vocabulary_app.Models
     {
         public Guid Id {get;set;}
         public Guid VocabularyId { get; set; }
+
+
         public Vocabulary Vocabulary { get; set; }
 
         public Guid TopicId { get; set; }

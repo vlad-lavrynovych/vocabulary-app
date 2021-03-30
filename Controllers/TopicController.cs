@@ -98,6 +98,10 @@ namespace vocabulary_app.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Topic topic)
         {
+            if (!ModelState.IsValid)
+            {
+                return RedirectToAction(nameof(Create));
+            }
 
             if (topic != null)
             {
