@@ -17,12 +17,12 @@ namespace vocabulary_app.Models
         public IdentityUser User { get; set; }
 
         [Required]
-        [RegularExpression(@"[a-zA-Z]+", ErrorMessage = "only letters")]
+        [RegularExpression(@"[a-zA-ZА-Яа-я]+", ErrorMessage = "only letters")]
         [StringLength( 20, ErrorMessage = "Слово повинно бути не більше 20 та не менше 1 літери!", MinimumLength = 1)]
         public string OriginalValue { get; set; }
 
         [Required]
-        [RegularExpression(@"[А-Яа-я]+", ErrorMessage = "only cyrylic letters")]
+        [RegularExpression(@"[А-Яа-яA-Za-z]+", ErrorMessage = "only cyrylic letters")]
         [StringLength(20, ErrorMessage = "Переклад повинен бути не більше 20 та не менше 1 літери!", MinimumLength = 1)]
         public string TranslatedValue { get; set; }
 
