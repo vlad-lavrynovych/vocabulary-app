@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,56 @@ namespace vocabulary_app.Controllers
             ViewBag.Topics = topics;
 
             return View();
+        }
+
+        public ActionResult TopicWordsIndex(Guid Id)
+        {
+            IEnumerable<Word> words = _dbContext.Words;
+            Topic topic = _dbContext.Topics.Include(t => t.WordTopics).ThenInclude(i => i.Word).Where(t => t.Id.Equals(Id)).Single();
+
+            if (topic.WordTopics == null)
+            {
+                topic.WordTopics = new List<WordTopic>();
+            }
+
+            //ViewBag.Words = words;
+            //ViewBag.Topic = topic;
+
+            WordsTopicsViewModel wordsTopicsViewModel = new WordsTopicsViewModel();
+
+            wordsTopicsViewModel.TopicId = Id;
+
+            IList<WordTopicsViewModel> list = new List<WordTopicsViewModel>();
+
+            foreach (Word word in words)
+            {
+                list.Add(new WordTopicsViewModel(topic.WordTopics.Any(s => s.Word.Equals(word)), word));
+            }
+
+            wordsTopicsViewModel.WordTopicsViewModels = list;
+
+            ViewBag.WordsTopicsViewModel = wordsTopicsViewModel;
+
+            return View();
+        }
+
+        [HttpPost]
+
+        public ActionResult TopicWordsIndex([FromBody] UpdateWordsTopicViewModel updateWordsTopicViewModel)
+        {
+            IEnumerable<Word> words = _dbContext.Words.Where(w => updateWordsTopicViewModel.WordIds.Any(s => w.Id.Equals(s)));
+            Topic topic = _dbContext.Topics.Include(t => t.WordTopics).Where(t => t.Id.Equals(updateWordsTopicViewModel.TopicId)).Single();
+            List<WordTopic> wordTopics = new List<WordTopic>();
+            foreach (Word word in words)
+            {
+                wordTopics.Add(new WordTopic(word, topic));
+            }
+
+            topic.WordTopics = wordTopics;
+
+            _dbContext.SaveChanges();
+
+            return Ok();
         }
 
         // GET: TopicController/Details/5
@@ -63,7 +114,6 @@ namespace vocabulary_app.Controllers
 
                 var userIdValue = userIdClaim.Value;
 
-
                 IdentityUser user = _dbContext.Users.FirstOrDefault(IdentityUser => IdentityUser.Id == userIdValue);
 
                 topic.User = user;
@@ -79,7 +129,7 @@ namespace vocabulary_app.Controllers
         // GET: TopicController/Edit/5
         public ActionResult Edit(Guid Id)
         {
-       
+
             Topic topic = _dbContext.Topics.Find(Id);
 
             ViewBag.Topics = topic;

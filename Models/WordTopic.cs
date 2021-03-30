@@ -15,5 +15,17 @@ namespace vocabulary_app.Models
         public Guid TopicId { get; set; }
 
         public Topic Topic { get; set; }
+
+        public WordTopic(Word word, Topic topic)
+        {
+            Word = word;
+            Topic = topic;
+            WordId = Word.Id;
+            TopicId = Topic.Id;
+        }
+
+        public WordTopic()
+        {
+        }
     }
 }
