@@ -12,29 +12,30 @@ using vocabulary_app.Models;
 
 namespace vocabulary_app.Controllers
 {
+    //Add a new controller, inherit it from Controller
     public class TopicController : Controller
     {
 
         private readonly ApplicationDbContext _dbContext;
         // GET: TopicController
 
-        public TopicController(ApplicationDbContext dbContext)
+        public async TopicController(ApplicationDbContext dbContext)
         {
-            _dbContext = dbContext;
+            await _dbContext = dbContext;
         }
-        public ActionResult Index()
+        public async ActionResult Index()
         {
-            IEnumerable<Topic> topics = _dbContext.Topics;
+            IEnumerable<Topic> topics = await _dbContext.Topics;
 
             ViewBag.Topics = topics;
 
             return View();
         }
 
-        public ActionResult TopicWordsIndex(Guid Id)
+        public async ActionResult TopicWordsIndex(Guid Id)
         {
-            IEnumerable<Word> words = _dbContext.Words;
-            Topic topic = _dbContext.Topics.Include(t => t.WordTopics).ThenInclude(i => i.Word).Where(t => t.Id.Equals(Id)).Single();
+            IEnumerable<Word> words = await _dbContext.Words;
+            Topic topic = await _dbContext.Topics.Include(t => t.WordTopics).ThenInclude(i => i.Word).Where(t => t.Id.Equals(Id)).Single();
 
             if (topic.WordTopics == null)
             {
@@ -64,10 +65,10 @@ namespace vocabulary_app.Controllers
 
         [HttpPost]
 
-        public ActionResult TopicWordsIndex([FromBody] UpdateWordsTopicViewModel updateWordsTopicViewModel)
+        public async ActionResult TopicWordsIndex([FromBody] UpdateWordsTopicViewModel updateWordsTopicViewModel)
         {
-            IEnumerable<Word> words = _dbContext.Words.Where(w => updateWordsTopicViewModel.WordIds.Any(s => w.Id.Equals(s)));
-            Topic topic = _dbContext.Topics.Include(t => t.WordTopics).Where(t => t.Id.Equals(updateWordsTopicViewModel.TopicId)).Single();
+            IEnumerable<Word> words = await _dbContext.Words.Where(w => updateWordsTopicViewModel.WordIds.Any(s => w.Id.Equals(s)));
+            Topic topic = await _dbContext.Topics.Include(t => t.WordTopics).Where(t => t.Id.Equals(updateWordsTopicViewModel.TopicId)).Single();
             List<WordTopic> wordTopics = new List<WordTopic>();
             foreach (Word word in words)
             {
@@ -76,7 +77,7 @@ namespace vocabulary_app.Controllers
 
             topic.WordTopics = wordTopics;
 
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChanges();
 
             return Ok();
         }
@@ -96,7 +97,7 @@ namespace vocabulary_app.Controllers
         // POST: TopicController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Topic topic)
+        public async ActionResult Create(Topic topic)
         {
             if (!ModelState.IsValid)
             {
@@ -114,23 +115,23 @@ namespace vocabulary_app.Controllers
 
                 var userIdValue = userIdClaim.Value;
 
-                IdentityUser user = _dbContext.Users.FirstOrDefault(IdentityUser => IdentityUser.Id == userIdValue);
+                IdentityUser user = await _dbContext.Users.FirstOrDefault(IdentityUser => IdentityUser.Id == userIdValue);
 
                 topic.User = user;
                 topic.UserId = user.Id;
 
                 //It doesn`t work*
-                _dbContext.Topics.Add(topic);
-                _dbContext.SaveChanges();
+                await _dbContext.Topics.Add(topic);
+                await _dbContext.SaveChanges();
             }
             return RedirectToAction("Index", "Topic");
         }
 
         // GET: TopicController/Edit/5
-        public ActionResult Edit(Guid Id)
+        public async ActionResult Edit(Guid Id)
         {
 
-            Topic topic = _dbContext.Topics.Find(Id);
+            Topic topic = await _dbContext.Topics.Find(Id);
 
             ViewBag.Topics = topic;
             return View();
@@ -140,7 +141,7 @@ namespace vocabulary_app.Controllers
         // POST: WordController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Guid Id, [Bind("Id,Name")] Topic topic)
+        public async ActionResult Edit(Guid Id, [Bind("Id,Name")] Topic topic)
         {
 
 
@@ -156,14 +157,14 @@ namespace vocabulary_app.Controllers
                 var userIdValue = userIdClaim.Value;
 
 
-                IdentityUser user = _dbContext.Users.FirstOrDefault(IdentityUser => IdentityUser.Id == userIdValue);
+                IdentityUser user = await _dbContext.Users.FirstOrDefault(IdentityUser => IdentityUser.Id == userIdValue);
 
                 topic.User = user;
                 topic.UserId = user.Id;
 
                 //It doesn`t work*
-                _dbContext.Update(topic);
-                _dbContext.SaveChanges();
+                await _dbContext.Update(topic);
+                await _dbContext.SaveChanges();
             }
 
             return RedirectToAction("Index", "Topic");
@@ -172,25 +173,25 @@ namespace vocabulary_app.Controllers
 
         // GET: TopicController/Delete/5
 
-        public ActionResult Delete(Guid Id)
+        public async ActionResult Delete(Guid Id)
         {
-            Topic topic = _dbContext.Topics.Find(Id);
+            Topic topic = await _dbContext.Topics.Find(Id);
             ViewBag.Topics = topic;
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(Guid Id, IFormCollection collection)
+        public async ActionResult Delete(Guid Id, IFormCollection collection)
         {
-            Topic topic = _dbContext.Topics.Find(Id);
+            Topic topic = await _dbContext.Topics.Find(Id);
             if (topic == null)
             {
                 return RedirectToAction(nameof(Index));
             }
 
-            _dbContext.Topics.Remove(topic);
-            _dbContext.SaveChanges();
+            await _dbContext.Topics.Remove(topic);
+            await _dbContext.SaveChanges();
             return RedirectToAction("Index", "Word");
 
         }
