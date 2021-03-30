@@ -17,11 +17,11 @@ namespace vocabulary_app.Controllers
 
         private readonly ApplicationDbContext _dbContext;
 
-        public WordController(ApplicationDbContext dbContext)
+        public async WordController(ApplicationDbContext dbContext)
         {
-            _dbContext = dbContext;
+            await _dbContext = dbContext;
         }
-        public ActionResult Index()
+        public async ActionResult Index()
         {
             ClaimsIdentity claimsIdentity = User.Identity as ClaimsIdentity;
 
@@ -32,7 +32,7 @@ namespace vocabulary_app.Controllers
 
             var userIdValue = userIdClaim.Value;
 
-            IEnumerable<Word> words = _dbContext.Words.Where(s => s.UserId == userIdValue);
+            IEnumerable<Word> words = await _dbContext.Words.Where(s => s.UserId == userIdValue);
 
             ViewBag.Words = words;
 
@@ -50,7 +50,7 @@ namespace vocabulary_app.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create(Word word)
+        public async IActionResult Create(Word word)
         {
 
             if (!ModelState.IsValid)
@@ -70,21 +70,21 @@ namespace vocabulary_app.Controllers
                 var userIdValue = userIdClaim.Value;
 
 
-                IdentityUser user = _dbContext.Users.FirstOrDefault(IdentityUser => IdentityUser.Id == userIdValue);
+                IdentityUser user = await _dbContext.Users.FirstOrDefault(IdentityUser => IdentityUser.Id == userIdValue);
 
                 word.User = user;
                 word.UserId = user.Id;
 
                 //It doesn`t work*
-                _dbContext.Words.Add(word);
-                _dbContext.SaveChanges();
+                await _dbContext.Words.Add(word);
+                await _dbContext.SaveChanges();
             }
             return RedirectToAction("Index", "Word");
         }
 
-        public ActionResult Edit(Guid Id)
+        public async ActionResult Edit(Guid Id)
         {
-            Word word = _dbContext.Words.Find(Id);
+            Word word = await _dbContext.Words.Find(Id);
             ViewBag.Words = word;
             return View();
         }
@@ -92,7 +92,7 @@ namespace vocabulary_app.Controllers
         // POST: WordController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Guid Id, [Bind("Id,OriginalValue,TranslatedValue,PartOfSpeech,PartOfSpeechDetails,Description")] Word word)
+        public async ActionResult Edit(Guid Id, [Bind("Id,OriginalValue,TranslatedValue,PartOfSpeech,PartOfSpeechDetails,Description")] Word word)
         {
 
             if (word != null)
@@ -107,38 +107,38 @@ namespace vocabulary_app.Controllers
                 var userIdValue = userIdClaim.Value;
 
 
-                IdentityUser user = _dbContext.Users.FirstOrDefault(IdentityUser => IdentityUser.Id == userIdValue);
+                IdentityUser user = await _dbContext.Users.FirstOrDefault(IdentityUser => IdentityUser.Id == userIdValue);
 
                 word.User = user;
                 word.UserId = user.Id;
 
-                _dbContext.Update(word);
-                _dbContext.SaveChanges();
+                await _dbContext.Update(word);
+                await _dbContext.SaveChanges();
             }
 
             return RedirectToAction("Index", "Word");
 
         }
 
-        public ActionResult Delete(Guid Id)
+        public async ActionResult Delete(Guid Id)
         {
-            Word word = _dbContext.Words.Find(Id);
+            Word word = await _dbContext.Words.Find(Id);
             ViewBag.Words = word;
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(Guid Id, IFormCollection collection)
+        public async ActionResult Delete(Guid Id, IFormCollection collection)
         {
-            Word word = _dbContext.Words.Find(Id);
+            Word word = await _dbContext.Words.Find(Id);
             if (word == null)
             {
                 return RedirectToAction(nameof(Index));
             }
 
-            _dbContext.Words.Remove(word);
-            _dbContext.SaveChanges();
+            await _dbContext.Words.Remove(word);
+            await _dbContext.SaveChanges();
             return RedirectToAction("Index", "Word");
 
         }
