@@ -1,0 +1,53 @@
+﻿@model vocabulary_app.Models.Topic
+
+@{
+    ViewData["Title"] = "TopicTestIndex";
+}
+
+<h1>Test</h1>
+<form asp-action="TopicTestResult">
+    <table class="table table-dark  table-striped">
+        <thead>
+            <tr>
+                <th>
+                    Original Value
+                </th>
+                <th style="width:50%">
+                    Choose Answer
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @{int i = 0;}
+            @foreach (AdvancedWordTestQuestion question in ViewBag.AdvancedWordTestQuestions)
+            {
+                <tr>
+                    <td>
+                        @question.Word.OriginalValue
+                    </td>
+                    <td style="width:50%">
+                        <select name="WordTestAnswers[@i].Translation" class="form-control">
+                            @{ foreach (Word w in question.Answers)
+                                {
+                                    <option value="@(w.TranslatedValue)">@(w.TranslatedValue)</option>
+                                }
+                            }
+                        </select>
+                        <input type="hidden" name="WordTestAnswers[@i].WordId" value="@question.Word.Id" />
+                    </td>
+                </tr>
+                i++;
+            }
+        </tbody>
+    </table>
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-lg btn-success">Submit</button>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
