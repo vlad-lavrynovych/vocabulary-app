@@ -27,6 +27,9 @@
             <th>
                 Delete
             </th>
+            <th>
+                Manage Words
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -44,10 +47,13 @@
             </td>
             <td>
                 <button class="btn btn-warning"><a class="text-secondary" asp-action="Edit" asp-route-id="@item.Id">Edit</a> </button>
-                
+
             </td>
             <td>
-                <button class="btn btn-danger"><a  class="text-white" asp-action="Delete" asp-route-id="@item.Id">Delete</a> </button>
+                <button class="btn btn-danger"><a class="text-white" asp-action="Delete" asp-route-id="@item.Id">Delete</a> </button>
+            </td>
+            <td>
+                <button class="btn btn-success"><a class="text-white" asp-action="TopicWordsIndex" asp-route-id="@item.Id"> Manage Words</a> </button>
             </td>
         </tr>
 }

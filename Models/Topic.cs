@@ -14,6 +14,5 @@ namespace vocabulary_app.Models
         public string Name { get; set; }
         public IEnumerable<WordTopic> WordTopics { get; set; }
         public IEnumerable<TopicVocabulary> TopicVocabularies { get; set; }
-
     }
 }

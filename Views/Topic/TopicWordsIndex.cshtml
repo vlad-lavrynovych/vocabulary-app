@@ -1,0 +1,122 @@
+﻿@model vocabulary_app.Models.WordsTopicsViewModel
+@{
+    ViewData["Title"] = "TopicWordsIndex";
+}
+
+<h1>Manage words in the topic</h1>
+<table class="table table-dark  table-striped">
+    <thead>
+        <tr>
+            <th>
+                Select
+            </th>
+            <th>
+                OriginalValue
+            </th>
+            <th>
+                TranslatedValue
+            </th>
+            <th>
+                PartOfSpeech
+            </th>
+            <th>
+                PartOfSpeechDetails
+            </th>
+            <th>
+                Description
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var i in ViewBag.WordsTopicsViewModel.WordTopicsViewModels)
+        {
+            <tr>
+                <td hidden>@(i.Word.Id)</td>
+                <td>
+                    <input type="checkbox" checked="@(i.Selected)">
+                </td>
+                <td>
+                    @(i.Word.OriginalValue)
+                </td>
+                <td>
+                    @(i.Word.TranslatedValue)
+                </td>
+                <td>
+                    @if (i.Word.PartOfSpeech == "1")
+                    {
+                        <p>Noun</p>
+                    }
+                    else if (i.Word.PartOfSpeech == "2")
+                    {
+                        <p>Pronoun</p>
+                    }
+                    else if (i.Word.PartOfSpeech == "3")
+                    {
+                        <p>Verb</p>
+                    }
+                    else if (i.Word.PartOfSpeech == "4")
+                    {
+                        <p>Adjective</p>
+                    }
+                    else if (i.Word.PartOfSpeech == "5")
+                    {
+                        <p>Adverb</p>
+                    }
+                    else if (i.Word.PartOfSpeech == "6")
+                    {
+                        <p>Preposotion</p>
+                    }
+                    else if (i.Word.PartOfSpeech == "7")
+                    {
+                        <p>Conjunction</p>
+                    }
+                    else
+                    {
+                        <p>INTERJECTION</p>
+                    }
+                </td>
+                <td>
+                    @(i.Word.PartOfSpeechDetails == null ? "-" : i.Word.PartOfSpeechDetails)
+                </td>
+                <td>
+                    @(i.Word.Description == null ? "-" : i.Word.Description)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script>
+        function ajax() {
+            var rows = document.getElementsByTagName("tr");
+            var ids = [];
+            for (let i = 1; i < rows.length; i++) {
+                let element = rows[i];
+                if (element.cells[1].firstElementChild.checked) {
+                    ids.push(element.firstElementChild.innerText);
+                }
+            }
+            var request = {
+                TopicId: "@(ViewBag.WordsTopicsViewModel.TopicId)",
+                WordIds: ids
+            }
+            $.ajax({
+                url: '@(ViewBag.WordsTopicsViewModel.TopicId)',
+                type: "POST",
+                contentType: 'application/json',
+                data: JSON.stringify(request),
+                async: true,
+                success: (data) => {
+                    alert("Success")
+                },
+                error: function (jqxhr, textStatus, errorThrown) {
+                    if (jqxhr.status === 401) {
+
+                    } else {
+                        alert(jqxhr.responseText);
+                        console.error('Error', jqxhr);
+                    }
+                }
+            });
+        }
+</script>
+<button onclick="ajax()" class="btn btn-lg btn-success">Submit</button>

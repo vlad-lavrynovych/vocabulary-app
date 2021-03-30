@@ -26,10 +26,20 @@ namespace vocabulary_app.Data
                         .WithMany(c => c.WordTopics)
                         .HasForeignKey(sc => sc.TopicId);
 
+            modelBuilder.Entity<Topic>()
+            .HasMany<WordTopic>(s => s.WordTopics)
+            .WithOne(c => c.Topic)
+            .HasForeignKey(sc => sc.TopicId);
+
             modelBuilder.Entity<WordTopic>()
                         .HasOne<Word>(sc => sc.Word)
                         .WithMany(s => s.WordTopics)
                         .HasForeignKey(sc => sc.WordId);
+
+            modelBuilder.Entity<Word>()
+.HasMany<WordTopic>(s => s.WordTopics)
+.WithOne(c => c.Word)
+.HasForeignKey(sc => sc.WordId);
 
             modelBuilder.Entity<TopicVocabulary>()
               .HasOne<Topic>(s => s.Topic)
