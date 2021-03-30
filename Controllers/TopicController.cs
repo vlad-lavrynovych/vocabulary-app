@@ -42,9 +42,6 @@ namespace vocabulary_app.Controllers
                 topic.WordTopics = new List<WordTopic>();
             }
 
-            //ViewBag.Words = words;
-            //ViewBag.Topic = topic;
-
             WordsTopicsViewModel wordsTopicsViewModel = new WordsTopicsViewModel();
 
             wordsTopicsViewModel.TopicId = Id;
@@ -63,8 +60,23 @@ namespace vocabulary_app.Controllers
             return View();
         }
 
-        [HttpPost]
+        public IActionResult TopicTestIndex(Guid Id)
+        {
+            Topic topic = _dbContext.Topics.Include(t => t.WordTopics).ThenInclude(i => i.Word).Where(t => t.Id.Equals(Id)).Single();
 
+            IList<Word> words = new List<Word>();
+
+            foreach (WordTopic wordTopic in topic.WordTopics)
+            {
+                words.Add(wordTopic.Word);
+            }
+
+            ViewBag.Words = words;
+
+            return View();
+        }
+
+        [HttpPost]
         public async Task<IActionResult> TopicWordsIndex([FromBody] UpdateWordsTopicViewModel updateWordsTopicViewModel)
         {
             IEnumerable<Word> words = _dbContext.Words.Where(w => updateWordsTopicViewModel.WordIds.Any(s => w.Id.Equals(s)));
