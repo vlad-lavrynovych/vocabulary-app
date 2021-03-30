@@ -76,6 +76,34 @@ namespace vocabulary_app.Controllers
             return View();
         }
 
+        public async Task<IActionResult> TopicSimpleTestIndex(Guid Id)
+        {
+            Topic topic = await _dbContext.Topics.Include(t => t.WordTopics).ThenInclude(i => i.Word).Where(t => t.Id.Equals(Id)).SingleAsync();
+            IList<Word> words = topic.WordTopics.Select(s => s.Word).ToList();
+            IList<AdvancedWordTestQuestion> questions = new List<AdvancedWordTestQuestion>();
+
+            foreach (Word word in words)
+            {
+                AdvancedWordTestQuestion question = new AdvancedWordTestQuestion();
+                Random rnd = new Random();
+                List<Word> answers = words.OrderBy(x => rnd.Next()).Take(4).ToList();
+                if (!answers.Contains(word))
+                {
+                    answers.Add(word);
+                }
+
+                question.Word = word;
+                question.Answers = answers;
+
+                questions.Add(question);
+            }
+
+
+            ViewBag.AdvancedWordTestQuestions = questions;
+
+            return View();
+        }
+
         public async Task<IActionResult> TopicTestResult(Guid Id, IList<WordTestAnswer> WordTestAnswers)
         {
             Topic topic = await _dbContext.Topics.Include(t => t.WordTopics).ThenInclude(i => i.Word).Where(t => t.Id.Equals(Id)).SingleAsync();
@@ -85,7 +113,7 @@ namespace vocabulary_app.Controllers
                 Word word = topic.WordTopics.Single(s => s.Word.Id.Equals(answer.WordId)).Word;
                 answer.CorrectTranslation = word.TranslatedValue;
                 answer.OriginalValue = word.OriginalValue;
-                answer.Correct = answer.Translation.Equals(word.TranslatedValue);
+                answer.Correct = answer.Translation!=null && answer.Translation.Equals(word.TranslatedValue);
             }
 
             ViewBag.WordTestAnswers = WordTestAnswers;

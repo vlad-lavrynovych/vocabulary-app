@@ -59,7 +59,10 @@
                 <button class="btn btn-success"><a class="text-white" asp-action="TopicWordsIndex" asp-route-id="@item.Id"> Manage Words</a> </button>
             </td>
             <td>
-                <button class="btn btn-primary"><a class="text-white" asp-action="TopicTestIndex" asp-route-id="@item.Id"> Take a test</a> </button>
+                <button class="btn btn-info"><a class="text-white" asp-action="TopicSimpleTestIndex" asp-route-id="@item.Id"> Take a simple test</a> </button>
+            </td>
+            <td>
+                <button class="btn btn-primary"><a class="text-white" asp-action="TopicTestIndex" asp-route-id="@item.Id"> Take an advanced test</a> </button>
             </td>
         </tr>
 }
