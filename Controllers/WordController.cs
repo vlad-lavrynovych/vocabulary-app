@@ -11,7 +11,7 @@ using vocabulary_app.Models;
 
 namespace vocabulary_app.Controllers
 {
-    public class WordController : Controller
+    public async class WordController : Controller
     {
 
 

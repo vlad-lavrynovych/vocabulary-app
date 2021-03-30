@@ -13,7 +13,7 @@ using vocabulary_app.Models;
 namespace vocabulary_app.Controllers
 {
     //Add a new controller, inherit it from Controller
-    public class TopicController : Controller
+    public async class TopicController : Controller
     {
 
         private readonly ApplicationDbContext _dbContext;
