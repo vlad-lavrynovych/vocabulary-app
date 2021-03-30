@@ -6,22 +6,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
+using System.Threading.Tasks;
 using vocabulary_app.Data;
 using vocabulary_app.Models;
 
 namespace vocabulary_app.Controllers
 {
-    public async class WordController : Controller
+    public class WordController : Controller
     {
 
 
         private readonly ApplicationDbContext _dbContext;
 
-        public async WordController(ApplicationDbContext dbContext)
+        public WordController(ApplicationDbContext dbContext)
         {
-            await _dbContext = dbContext;
+            _dbContext = dbContext;
         }
-        public async ActionResult Index()
+        public IActionResult Index()
         {
             ClaimsIdentity claimsIdentity = User.Identity as ClaimsIdentity;
 
@@ -32,12 +33,11 @@ namespace vocabulary_app.Controllers
 
             var userIdValue = userIdClaim.Value;
 
-            IEnumerable<Word> words = await _dbContext.Words.Where(s => s.UserId == userIdValue);
+            IEnumerable<Word> words = _dbContext.Words.Where(s => s.UserId == userIdValue);
 
             ViewBag.Words = words;
 
             return View();
-
         }
 
         public ActionResult Details(int id)
@@ -50,7 +50,7 @@ namespace vocabulary_app.Controllers
             return View();
         }
         [HttpPost]
-        public async IActionResult Create(Word word)
+        public async Task<IActionResult> Create(Word word)
         {
 
             if (!ModelState.IsValid)
@@ -70,21 +70,22 @@ namespace vocabulary_app.Controllers
                 var userIdValue = userIdClaim.Value;
 
 
-                IdentityUser user = await _dbContext.Users.FirstOrDefault(IdentityUser => IdentityUser.Id == userIdValue);
+                IdentityUser user = _dbContext.Users.FirstOrDefault(IdentityUser => IdentityUser.Id == userIdValue);
 
                 word.User = user;
                 word.UserId = user.Id;
 
                 //It doesn`t work*
-                await _dbContext.Words.Add(word);
-                await _dbContext.SaveChanges();
+                _dbContext.Words.Add(word);
+
+                await _dbContext.SaveChangesAsync();
             }
             return RedirectToAction("Index", "Word");
         }
 
-        public async ActionResult Edit(Guid Id)
+        public async Task<IActionResult> Edit(Guid Id)
         {
-            Word word = await _dbContext.Words.Find(Id);
+            Word word = await _dbContext.Words.FindAsync(Id);
             ViewBag.Words = word;
             return View();
         }
@@ -92,7 +93,7 @@ namespace vocabulary_app.Controllers
         // POST: WordController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async ActionResult Edit(Guid Id, [Bind("Id,OriginalValue,TranslatedValue,PartOfSpeech,PartOfSpeechDetails,Description")] Word word)
+        public async Task<IActionResult> Edit(Guid Id, [Bind("Id,OriginalValue,TranslatedValue,PartOfSpeech,PartOfSpeechDetails,Description")] Word word)
         {
 
             if (word != null)
@@ -107,38 +108,38 @@ namespace vocabulary_app.Controllers
                 var userIdValue = userIdClaim.Value;
 
 
-                IdentityUser user = await _dbContext.Users.FirstOrDefault(IdentityUser => IdentityUser.Id == userIdValue);
+                IdentityUser user = _dbContext.Users.FirstOrDefault(IdentityUser => IdentityUser.Id == userIdValue);
 
                 word.User = user;
                 word.UserId = user.Id;
 
-                await _dbContext.Update(word);
-                await _dbContext.SaveChanges();
+                _dbContext.Update(word);
+                await _dbContext.SaveChangesAsync();
             }
 
             return RedirectToAction("Index", "Word");
 
         }
 
-        public async ActionResult Delete(Guid Id)
+        public async Task<IActionResult> Delete(Guid Id)
         {
-            Word word = await _dbContext.Words.Find(Id);
+            Word word = await _dbContext.Words.FindAsync(Id);
             ViewBag.Words = word;
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async ActionResult Delete(Guid Id, IFormCollection collection)
+        public async Task<IActionResult> Delete(Guid Id, IFormCollection collection)
         {
-            Word word = await _dbContext.Words.Find(Id);
+            Word word = await _dbContext.Words.FindAsync(Id);
             if (word == null)
             {
                 return RedirectToAction(nameof(Index));
             }
 
-            await _dbContext.Words.Remove(word);
-            await _dbContext.SaveChanges();
+            _dbContext.Words.Remove(word);
+            await _dbContext.SaveChangesAsync();
             return RedirectToAction("Index", "Word");
 
         }
