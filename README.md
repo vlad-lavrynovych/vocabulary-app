@@ -1,8 +1,8 @@
 # Vocabulary-app
 ## Description
-This C# project is vocabulary storage, where a user can enter all words he wants and learn him. 
+This C# project is a vocabulary storage, where user can enter all the words he wants and learn them. 
 It is like a self-building vocabulary, where you can store, for example, new words you learned in a language you are about to master. 
-Combo keys ctrl+f help you to find words in your list..
+Combo keys ctrl+f help you to find the words in your list..
 
 ## Setup/Installation Requirements
 * Clone this repo.
@@ -14,4 +14,4 @@ vlad300820001@gmail.com
 
 ## Technologies Used
 
-_C#, .NET, Microsoft sqlserver
+C#, .NET, Microsoft SQL Server
